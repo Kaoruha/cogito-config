@@ -134,6 +134,7 @@ set splitright
 
 "******************auto format设置***************
 command! Format :call Format()
+command! Fmt :call Format()
 func! Format()
    if &filetype == 'python'
        exec "!python3 -m black %"
@@ -142,7 +143,7 @@ func! Format()
 endfunc
 
 set autoread  "当vim打开的文件变化时,自动载入,因为black会修改python文件
-autocmd FileType python autocmd BufWriteCmd *.py call Format()
+autocmd BufWrite *.py call Format()
 
 
 " 语法高亮支持
