@@ -134,13 +134,12 @@ set splitright
 
 "******************auto format设置***************
 command! Format :call Format()
-command! Fmt :call Format()
 fun Format()
-    exec "w!"
-   if &filetype == 'python'
-       exec "!python3 -m black %"
-   endif
-   exec "e!"
+    exec "w"
+    if &filetype == 'python'
+        exec "!python3 -m black %"
+    endif
+    exec "e!"
 endfunc
 
 set autoread  "当vim打开的文件变化时,自动载入,因为black会修改python文件
