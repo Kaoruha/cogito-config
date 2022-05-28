@@ -85,7 +85,7 @@ let NERDTreeDirArrows = 1
 " -- 过滤不显示的文件
 let g:NERDTreeIgnore=['\.pyc','\~$','\.swp','^__pycache__$','^mongo$','^env$','^venv$']
 " -- nerdtree的git文件状设置
-Ret g:NERDTreeGitStatusIndicatorMapCustom = {
+let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Modified'  :'✹',
                 \ 'Staged'    :'✚',
                 \ 'Untracked' :'✭',
@@ -168,7 +168,7 @@ set cursorline
 set nu
 set relativenumber
 " 取消自动换行
-set textwidth=1000
+set textwidth=10001
 
 "************缩进设置***************
 " 自动套用上一行的缩进方式
@@ -183,7 +183,6 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-set autoindent
 
 "------------------- python 文件设置--------------------
 " 开启语法高亮
@@ -193,7 +192,7 @@ au Filetype python set tabstop=4
 " 设置编辑模式下tab的宽度
 au Filetype python set softtabstop=4
 au Filetype python set shiftwidth=4
-au Filetype python set textwidth=79
+au Filetype python set textwidth=10000
 au Filetype python set expandtab
 au Filetype python set autoindent
 au Filetype python set fileformat=unix
