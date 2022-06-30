@@ -13,6 +13,8 @@ Plug 'vim-airline/vim-airline-themes'
 " 代码补全
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+Plug 'OmniSharp/omnisharp-vim'
+
 "可视化缩进
 Plug 'Yggdroot/indentLine'
 
@@ -198,3 +200,6 @@ au Filetype python set autoindent
 au Filetype python set fileformat=unix
 autocmd Filetype python set foldmethod=indent
 autocmd Filetype python set foldlevel=99
+
+
+let g:OmniSharp_server_use_net6 = 1
