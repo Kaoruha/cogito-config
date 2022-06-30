@@ -1,4 +1,9 @@
 # nvimconf
+
+Platform: Linux
+Editor: Nvim
+Language: CSharp && Python
+
 help rebuilding the env
 
 You could replace these confs to build your env.
