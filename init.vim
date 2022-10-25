@@ -4,11 +4,13 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'scrooloose/nerdtree'
 
 " 主题
-Plug 'morhetz/gruvbox'
+" Plug 'morhetz/gruvbox'
+Plug 'sainnhe/everforest'
 
 " vim-airline 底部状态栏优化
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 
 " 代码补全
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -33,14 +35,23 @@ call plug#end()
 
 
 " 主题
-colorscheme gruvbox
+if has('termguicolors')
+    set termguicolors
+endif
+
+colorscheme everforest
 set background=dark
-"set background=dark " 或者 set background=light
+let g:everforest_background = 'soft'
+let g:everforest_better_performance = 1
 
 
 "AirLine
 let g:airline#extensions#tabline#enabled = 1   "显示窗口tab和bufferlet
-let g:airline_theme='bubblegum'
+let g:airline_theme = 'everforest'
+
+" LightLine
+let g:lightline = {}
+let g:lightline.colorscheme = 'everforest'
 
 "可视化锁进
 let g:indent_guides_guide_size = 1  " 指定对齐线的尺寸
@@ -65,7 +76,7 @@ nnoremap <F3> :NERDTreeToggle<CR>
 " -- 自动开启nerdtree
 autocmd vimenter * NERDTree 
 " -- 设定nerdtree的窗口大小
-let g:NERDTreeWinSize = 24
+let g:NERDTreeWinSize = 22
 " -- 打开nerdtree时自动显示bookmarks
 let NERDTreeShowBookmarks=1
 " -- 打开nvim时若没有任何文件，则自动打开nerdtree
@@ -174,7 +185,7 @@ set textwidth=10001
 
 "************缩进设置***************
 " 自动套用上一行的缩进方式
-set autoindent
+" set autoindent
 " 开智能缩进
 set smartindent
 " 光标移动到buffer的顶部和底部保持4行继续
