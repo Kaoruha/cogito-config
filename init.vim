@@ -74,7 +74,7 @@ set cursorline " 突出显示当前行
 " -- 为打开或关闭nerdtree设置一个快捷键
 nnoremap <F3> :NERDTreeToggle<CR>
 " -- 自动开启nerdtree
-autocmd vimenter * NERDTree 
+" autocmd vimenter * NERDTree 
 " -- 设定nerdtree的窗口大小
 let g:NERDTreeWinSize = 22
 " -- 打开nerdtree时自动显示bookmarks
