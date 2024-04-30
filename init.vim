@@ -13,6 +13,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
 
 " 代码补全
+Plug 'ycm-core/YouCompleteMe'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'OmniSharp/omnisharp-vim'
@@ -22,6 +23,8 @@ Plug 'Yggdroot/indentLine'
 
 "语法高亮插件
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+"固定类及方法于顶端
+Plug 'nvim-treesitter/nvim-treesitter-context'
 
 "自动括号
 Plug 'jiangmiao/auto-pairs'
@@ -29,6 +32,20 @@ Plug 'jiangmiao/auto-pairs'
 
 " 注释插件
 Plug 'joom/vim-commentary'
+
+" 模糊搜索
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+" Copilot
+" Plug 'huggingface/llm.nvim'
+"
+
+Plug 'rcarriga/nvim-notify'
+Plug 'folke/noice.nvim'
+Plug 'MunifTanjim/nui.nvim'
+
+" Plug 'simrat39/symbols-outline.nvim'
 
 call plug#end()
 
@@ -154,9 +171,9 @@ fun Format()
     endif
     exec "e!"
 endfunc
+autocmd BufWritePre *.py call Format()
 
 set autoread  "当vim打开的文件变化时,自动载入,因为black会修改python文件
-autocmd BufWritePre *.py call Format()
 
 
 " 语法高亮支持
@@ -212,5 +229,108 @@ au Filetype python set fileformat=unix
 autocmd Filetype python set foldmethod=indent
 autocmd Filetype python set foldlevel=99
 
+set mouse=
+
 
 let g:OmniSharp_server_use_net6 = 1
+
+" 设置背景为透明
+highlight Normal guibg=NONE
+highlight Normal ctermbg=NONE
+highlight NonText guibg=NONE
+highlight NonText guibg=NONE ctermbg=none
+highlight FloatBorder guibg=NONE ctermbg=NONE
+
+
+" 设置Telescope快捷键
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+lua << EOF
+require'treesitter-context'.setup{
+  enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+  max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+  min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+  line_numbers = true,
+  multiline_threshold = 20, -- Maximum number of lines to show for a single context
+  trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+  mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
+  -- Separator between context and content. Should be a single character string, like '-'.
+  -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+  separator = nil,
+  zindex = 20, -- The Z-index of the context window
+  on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+}
+EOF
+
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all" (the five listed parsers should always be installed)
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python" },
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = true,
+
+  -- List of parsers to ignore installing (or "all")
+  ignore_install = { "javascript" },
+
+  ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
+  -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
+
+  highlight = {
+    enable = true,
+
+    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+    -- the name of the parser)
+    -- list of language that will be disabled
+    disable = { "c", "rust" },
+    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+    disable = function(lang, buf)
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+            return true
+        end
+    end,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+lua << EOF
+require'noice'.setup {
+    lsp = {
+    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+    },
+  },
+  -- you can enable a preset for easier configuration
+  presets = {
+    bottom_search = true, -- use a classic bottom cmdline for search
+    command_palette = true, -- position the cmdline and popupmenu together
+    long_message_to_split = true, -- long messages will be sent to a split
+    inc_rename = false, -- enables an input dialog for inc-rename.nvim
+    lsp_doc_border = false, -- add a border to hover docs and signature help
+  }, 
+  views = {
+      notify = {
+          timeout = 1000
+          }
+      }
+}
+EOF
