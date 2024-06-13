@@ -9,8 +9,8 @@ Plug 'shaunsingh/nord.nvim'
 Plug 'lukas-reineke/headlines.nvim'
 
 " vim-airline 底部状态栏优化
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
 
 " 代码补全
@@ -55,12 +55,12 @@ let g:nord_bold = v:false
 
 
 "AirLine
-let g:airline#extensions#tabline#enabled = 1   "显示窗口tab和bufferlet
-let g:airline_theme = 'everforest'
+" let g:airline#extensions#tabline#enabled = 1   "显示窗口tab和bufferlet
+" let g:airline_theme = 'everforest'
 
 " LightLine
 let g:lightline = {}
-let g:lightline.colorscheme = 'everforest'
+let g:lightline.colorscheme = 'wombat'
 
 "可视化锁进
 let g:indent_guides_guide_size = 1  " 指定对齐线的尺寸
