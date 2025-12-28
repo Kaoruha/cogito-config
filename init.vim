@@ -320,3 +320,12 @@ require("headlines").setup({
     },
 })
 EOF
+
+
+lua << EOF
+require("nvim-tree").setup({
+    filters = {
+        custom = { "__pycache__", ".git", "node_modules", ".claude", ".specify" },
+    },
+  })
+EOF
